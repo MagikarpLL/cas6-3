@@ -1,0 +1,67 @@
+CREATE
+DATABASE IF NOT EXISTS `duser` default CHARACTER SET = utf8mb4 DEFAULT COLLATE utf8mb4_general_ci;
+
+USE duser;
+
+CREATE TABLE `t_user`
+(
+    `id`          BIGINT(20) NOT NULL AUTO_INCREMENT COMMENT '自增长Id',
+    `account`     VARCHAR(255) NOT NULL DEFAULT '' COMMENT '账号',
+    `mobile`      VARCHAR(64)  NOT NULL DEFAULT '' COMMENT '手机号',
+    `email`       VARCHAR(255) NOT NULL DEFAULT '' COMMENT '邮箱',
+    `fullname`    VARCHAR(255) NOT NULL DEFAULT '' COMMENT '全程',
+    `password`    VARCHAR(255) NOT NULL DEFAULT '' COMMENT '密码',
+    `salt`        VARCHAR(255) NOT NULL DEFAULT '' COMMENT '盐值',
+    `weixin`      VARCHAR(255) NOT NULL DEFAULT '' COMMENT '微信',
+    `status`      TINYINT(4) NOT NULL DEFAULT 1 COMMENT '状态: -1禁用 -2离职 1正常',
+    `notify_type` TINYINT(4) NOT NULL DEFAULT 1 COMMENT '通知类型: 1手机 2邮箱',
+    `create_time` DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    `update_time` DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+    `has_del`     TINYINT(1) NOT NULL DEFAULT 0 COMMENT '是否已被删除 0未被删除 1已删除',
+    PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4
+  ROW_FORMAT = DYNAMIC COMMENT ='用户表';
+
+CREATE TABLE `t_verification`
+(
+    `id`          BIGINT(20) NOT NULL AUTO_INCREMENT COMMENT '自增长主键',
+    `account`     VARCHAR(255) NOT NULL DEFAULT '' COMMENT '',
+    `receiver`    VARCHAR(255) NOT NULL DEFAULT '' COMMENT '',
+    `code`        varchar(30)  NOT NULL DEFAULT '' COMMENT '',
+    `type`        TINYINT(4) NOT NULL DEFAULT 0 COMMENT '',
+    `has_checked` TINYINT(1) NOT NULL DEFAULT 0 COMMENT '',
+    `add_time`    DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '',
+    `expire_time` DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '',
+    PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4
+  ROW_FORMAT = DYNAMIC COMMENT ='表';
+
+CREATE TABLE `t_msg_record`
+(
+    `id`       BIGINT(20) NOT NULL AUTO_INCREMENT COMMENT '自增长主键',
+    `account`  VARCHAR(255) NOT NULL DEFAULT '' COMMENT '',
+    `receiver` VARCHAR(255) NOT NULL DEFAULT '' COMMENT '',
+    `msg`      varchar(500) NOT NULL DEFAULT '' COMMENT '',
+    `add_time` DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '',
+    PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4
+  ROW_FORMAT = DYNAMIC COMMENT ='表';
+
+CREATE TABLE `t_appuser`
+(
+    `id`            BIGINT(20) NOT NULL AUTO_INCREMENT COMMENT '自增长主键',
+    `user_id`       VARCHAR(255) NOT NULL DEFAULT '' COMMENT '',
+    `nickname`      VARCHAR(255) NOT NULL DEFAULT '' COMMENT '',
+    `device_number` VARCHAR(255) NOT NULL DEFAULT '' COMMENT '',
+    `receiver`      VARCHAR(255) NOT NULL DEFAULT '' COMMENT '',
+    `password`      VARCHAR(100) NOT NULL DEFAULT '' COMMENT '',
+    `receiver_type` TINYINT(4) NOT NULL DEFAULT 0 COMMENT '',
+    `create_time`   DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    `update_time`   DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+    PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4
+  ROW_FORMAT = DYNAMIC COMMENT ='表';

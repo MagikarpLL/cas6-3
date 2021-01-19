@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<flow xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xmlns="http://www.springframework.org/schema/webflow"
+      xsi:schemaLocation="http://www.springframework.org/schema/webflow
+                          http://www.springframework.org/schema/webflow/spring-webflow.xsd">
+
+    <var name ="credential" class="org.apereo.cas.authentication.credential.UsernamePasswordCredential"/>
+    <var name ="kjsCredential" class="org.apereo.cas.authentication.credential.UsernamePasswordCredential"/>
+
+
+    <action-state id="initializeLoginForm">
+        <evaluate expression="initializeLoginAction" />
+        <transition on="success" to="ticketGrantingTicketCheck"/>
+    </action-state>
+
+    <action-state id="ticketGrantingTicketCheck">
+        <evaluate expression="ticketGrantingTicketCheckAction" />
+        <transition on="notExists" to="gatewayRequestCheck"/>
+        <transition on="invalid" to="terminateSession"/>
+        <transition on="valid" to="hasServiceCheck"/>
+    </action-state>
+
+    <decision-state id="gatewayRequestCheck">
+        <if test="requestParameters.gateway != '' and requestParameters.gateway != null and flowScope.service != null"
+            then="gatewayServicesManagementCheck" else="serviceAuthorizationCheck"/>
+    </decision-state>
+
+    <action-state id="terminateSession">
+        <evaluate expression="terminateSessionAction.terminate(flowRequestContext)"/>
+        <transition to="gatewayRequestCheck"/>
+    </action-state>
+
+    <decision-state id="hasServiceCheck">
+        <if test="flowScope.service != null"
+            then="renewRequestCheck" else="viewGenericLoginSuccess"/>
+    </decision-state>
+
+    <decision-state id="renewRequestCheck">
+        <if test="requestParameters.renew != '' and requestParameters.renew != null" then="serviceAuthorizationCheck" else="generateServiceTicket" />
+    </decision-state>
+
+    <action-state id="serviceAuthorizationCheck">
+        <evaluate expression="serviceAuthorizationCheck"/>
+        <transition to="initializeLogin"/>
+    </action-state>
+
+
+
+
+    <view-state id="viewLoginForm" view="casLoginView" model="credential">
+        <binder>
+            <binding property="username" required="true"/>
+            <binding property="password" required="true"/>
+            <binding property="source" required="true" />
+        </binder>
+        <on-render>
+            <evaluate expression="renderLoginFormAction" />
+        </on-render>
+        <transition on="submit" bind="true" validate="true" to="realSubmit" history="invalidate"/>
+    </view-state>
+
+    <action-state id="realSubmit">
+        <evaluate expression="authenticationViaFormAction"/>
+        <transition on="warn" to="warn"/>
+        <transition on="success" to="createTicketGrantingTicket"/>
+        <transition on="successWithWarnings" to="showAuthenticationWarningMessages"/>
+        <transition on="authenticationFailure" to="handleAuthenticationFailure"/>
+        <transition on="error" to="initializeLoginForm"/>
+    </action-state>
+</flow>

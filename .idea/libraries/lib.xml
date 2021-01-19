@@ -1,0 +1,16 @@
+<component name="libraryTable">
+  <library name="lib">
+    <CLASSES>
+      <root url="file://$PROJECT_DIR$/overlays/org.apereo.cas.cas-server-webapp-tomcat-6.3.0/WEB-INF/lib" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.ideaLibSources/cas-server-core-util-api-6.3.0-sources.jar!/" />
+      <root url="jar://$USER_HOME$/.ideaLibSources/cas-server-core-6.3.0-sources.jar!/" />
+      <root url="jar://$USER_HOME$/.ideaLibSources/cas-server-webapp-init-6.3.0-sources.jar!/" />
+      <root url="jar://$USER_HOME$/.ideaLibSources/cas-server-support-captcha-core-6.3.0-sources.jar!/" />
+      <root url="jar://$USER_HOME$/.ideaLibSources/cas-server-support-actions-6.3.0-sources.jar!/" />
+    </SOURCES>
+    <jarDirectory url="file://$PROJECT_DIR$/overlays/org.apereo.cas.cas-server-webapp-tomcat-6.3.0/WEB-INF/lib" recursive="false" />
+  </library>
+</component>
